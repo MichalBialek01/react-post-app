@@ -29,8 +29,7 @@ const [user] = useAuthState(auth);
 
     const onCreatePost = async (data: CreatePostData) => {
         await addDoc(postsRef, {
-            title: data.title,
-            description: data.description,
+            ...data,
             username: user?.displayName,
             userId: user?.uid,
         });
