@@ -1,6 +1,19 @@
+import {auth,provider} from '../config/firebase'
+import {signInWithPopup} from 'firebase/auth'
+import {useNavigate} from "react-router-dom"
 export const Login  = () => {
 
-    return <div>Login Page</div>
+    const navigate = useNavigate();
+
+    const sighInWithGoogle  = async () => {
+        const result = await signInWithPopup(auth,provider);
+        navigate("/")
+    }
+
+    return <div>
+        <p>Sign In With Google To Continue</p>
+        <button onClick={sighInWithGoogle}>Sign In With Google</button>
+    </div>
 
 
 }
