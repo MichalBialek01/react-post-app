@@ -8,20 +8,23 @@ export const Navbar = () => {
     const [user] = useAuthState(auth);
 
     const userLogout = async () => {
-    await  signOut(auth)
+        await signOut(auth)
     }
 
 
     return (<div className="navbar">
-        <div className="links">
-            <Link to="/">Home</Link>
-            <Link to="/login">Login</Link>
-        </div>
-        <div className="user">
-            <p>{user?.displayName}</p>
-            <img src={user?.photoURL || ""} width="50" height="50" />
-            <button onClick={userLogout}>Logout</button>
-        </div>
+            <div className="links">
+                <Link to="/">Home</Link>
+                <Link to="/login">Login</Link>
+            </div>
+            <div className="user">
+                {user && (
+                    <>
+                        <p>{user?.displayName}</p>
+                        <img src={user?.photoURL || ""} width="50" height="50"/>
+                        <button onClick={userLogout}>Logout</button>
+                    </>)}
+            </div>
         </div>
     )
 
