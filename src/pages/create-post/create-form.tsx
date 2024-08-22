@@ -16,19 +16,20 @@ export const CreateForm = () =>{
         description: yup.string().required("You must add a description"),
     })
 
-    const {register,handleSubmit, formState:{errors}} = useForm<CreatePostData>({
+    const {register,
+        handleSubmit,
+        formState:{errors}} = useForm<CreatePostData>({
         resolver: yupResolver(schema)
     })
 
-    const onCreatePost  = (data: CreatePostData) => {
-
-    }
+    const onCreatePost = (data: CreatePostData) => {
+    };
 
     return (<form onSubmit={handleSubmit(onCreatePost)}>
         <input placeholder="Title" {...register("title")}/>
-        <p style={{color:"red"}}>{errors.title?.message}</p>
+        <p style={{ color: "red" }}>{errors.title?.message}</p>
         <textarea placeholder="Description"{...register("description")}/>
-        <p style={{color:"red"}}>{errors.description?.message}</p>
+        <p style={{color: "blue"}}>{errors.description?.message}</p>
         <input type="submit"/>
     </form>);
 }
