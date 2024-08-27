@@ -2,9 +2,9 @@ import {CreateForm} from "./create-form";
 
 export const CreatePost = () => {
 
-    return <div>
-        <form>
+    return (
+        <div className="create-post">
             <CreateForm/>
-        </form>
-    </div>
+        </div>
+    )
 }
