@@ -1,5 +1,5 @@
 import {Post as IPost} from "./main";
-import {addDoc, collection, getDocs, query, where} from "firebase/firestore";
+import {addDoc, collection, getDocs, query, where,deleteDoc,doc} from "firebase/firestore";
 import {auth, db} from "../../config/firebase";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useEffect, useState} from "react";
@@ -37,6 +37,29 @@ export const Post = (props: Props) => {
         }
     ;
 
+    const removeLike = async () => {
+        try {
+            const likeToDeleteQuery = query(
+                likesRef,
+                where("postId", "==", post.id),
+                where("userId", "==", user?.uid)
+            );
+
+            const likeToDeleteData = await getDocs(likeToDeleteQuery);
+            const likeToDelete = doc(db, "likes", likeToDeleteData.docs[0].id);
+
+            await deleteDoc(likeToDelete);
+
+            if (user) {
+                setLikes((prev) =>
+                    prev ? prev.filter((like) => like.userId !== user.uid) : []
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
 
     const getUserLikes = async () => {
         const data = await getDocs(likesDoc);
@@ -57,7 +80,7 @@ export const Post = (props: Props) => {
         </div>
         <div className="footer">
             <p>{post.username}</p>
-            <button onClick={addLike}> {hasUserLiked ? <>&#128078;</> : <>&#128077;</>}</button>
+            <button onClick={hasUserLiked ? removeLike: addLike}> {hasUserLiked ? <>&#128078;</> : <>&#128077;</>}</button>
             {likes && <p>Likes: {likes?.length}</p>}
         </div>
     </div>
