@@ -7,16 +7,20 @@ import {useEffect, useState} from "react";
 interface Props {
     post: IPost
 }
+interface Like{
+    userId: string
+}
 
 export const Post = (props: Props) => {
     const {post} = props
 
     const likesRef = collection(db, "likes");
     const likesDoc = query(likesRef,where("postId","==",post.id))
-
     const [user] = useAuthState(auth);
 
-    const [likeAmount,getLikeAmount] = useState<number | null>(null);
+    const [likes,getLikes] = useState<Like[] | null>(null);
+
+    const hasUserLiked = likes?.find(like => like.userId === user?.uid);
 
     const addLike = async () => {
         await addDoc(likesRef, {
@@ -26,13 +30,13 @@ export const Post = (props: Props) => {
 
     };
 
-    const getLikes = async () => {
+    const getUserLikes = async () => {
         const data = await getDocs(likesDoc);
-        getLikeAmount(data.docs.length)
+        getLikes(data.docs.map((doc) => ({ userId: doc.data().userId})))
     }
 
     useEffect(() => {
-        getLikes()
+        getUserLikes()
     },[])
 
 
@@ -45,8 +49,8 @@ export const Post = (props: Props) => {
         </div>
         <div className="footer">
             <p>{post.username}</p>
-            <button onClick={addLike}>&#128077;</button>
-            { likeAmount && <p>Likes: {likeAmount}</p>}
+            <button onClick={addLike}> {hasUserLiked ?<>&#128078;</> :<>&#128077;</> }</button>
+            { likes && <p>Likes: {likes?.length}</p>}
         </div>
     </div>
 }
