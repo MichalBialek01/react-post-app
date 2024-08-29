@@ -71,7 +71,7 @@ export const Post = (props: Props) => {
     }, [])
 
 
-    return <div>
+    return <div className="post-container">
         <div className="title">
             <h1>{post.title}</h1>
         </div>

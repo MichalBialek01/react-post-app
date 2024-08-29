@@ -30,7 +30,7 @@ export const Main = () => {
     //UseEffect, który jest uruchamiany raz podczas ładowani strony
 
     return (
-        <div>
+        <div className="main-container">
             {postList?.map((post) => (
                 <Post post={post}/>
             ))}
